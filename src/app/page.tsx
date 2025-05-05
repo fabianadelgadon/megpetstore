@@ -71,7 +71,7 @@ export default function Home() {
       <header className="w-full max-w-5xl items-center justify-center text-sm flex flex-col mb-12 pt-8" id="inicio"> {/* Adjusted padding top */}
          {/* Logo centered - Using transparent logo */}
          <Image
-            src="/images/LogoMEg.png" // Updated path to transparent logo
+            src="/images/logo-meg-pet-store.png" // Updated path to transparent logo
             alt="MEG PET Store Logo"
             width={180} // Increased size for better visibility
             height={180}
