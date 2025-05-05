@@ -1,5 +1,26 @@
+"use client"; // Add this line at the top
+
 import Image from "next/image";
-import { Phone, MapPin, Instagram, PawPrint, Truck, Menu } from 'lucide-react'; // Import icons, removed MessageCircle, added Menu
+import { Phone, MapPin, Instagram, PawPrint, Truck, Menu, X } from 'lucide-react'; // Import icons, added X for close
+import { useState } from 'react'; // Import useState
+
+// Helper component for WhatsApp button
+const WhatsAppButton = ({ text, className }: { text: string, className?: string }) => {
+  const whatsappNumber = "5511987102030";
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Gostaria de agendar um serviço ou saber mais sobre a MEG PET Store.`;
+  return (
+    <a
+      href={whatsappLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-500 hover:bg-green-600 transition-colors ${className}`}
+    >
+      {/* Updated WhatsApp Icon */}
+      <Image src="/images/whatsapp-icon.png" alt="WhatsApp Icon" width={20} height={20} className="mr-2" />
+      {text}
+    </a>
+  );
+};
 
 export default function Home() {
   const whatsappNumber = "5511987102030"; // Brazil country code + number without symbols
@@ -7,42 +28,61 @@ export default function Home() {
   const mapAddress = "Rua Angaturama, 402 - Vila das Mercês, São Paulo - SP, 04164-010, Brasil";
   const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(mapAddress)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
 
-  // TODO: Add state for mobile menu toggle if needed
+  // State for mobile menu toggle
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-6 md:p-12 lg:p-24 bg-meg-beige-100 text-meg-dark font-sans"> {/* Apply font-sans globally */}
 
-      {/* Navigation Menu - TODO: Make responsive */}
+      {/* Navigation Menu */}
       <nav className="w-full max-w-5xl flex justify-between items-center mb-8 bg-white p-4 rounded-md shadow-sm sticky top-4 z-40">
-        {/* Logo inside nav */}
-        <a href="#inicio" className="flex items-center space-x-2">
-          <Image
-            src="/images/logo-meg-pet-store.jpeg" // Path relative to /public
-            alt="MEG PET Store Logo Pequeno"
-            width={50} // Smaller logo for nav
-            height={50}
-            className="shadow-sm" // Removed rounded-full and border
-          />
-          {/* <span className="font-heading text-lg text-meg-pink-600">MEG PET Store</span> */}
-        </a>
+        {/* Placeholder for logo alignment - can be adjusted or removed */}
+        <div className="w-12 h-12"></div> {/* Invisible spacer to help center menu items if needed */}
+
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-6">
+          <a href="#inicio" className="text-meg-dark hover:text-meg-pink transition-colors">Início</a>
           <a href="#historia" className="text-meg-dark hover:text-meg-pink transition-colors">Nossa História</a>
           <a href="#servicos" className="text-meg-dark hover:text-meg-pink transition-colors">Serviços</a>
           <a href="#contato" className="text-meg-dark hover:text-meg-pink transition-colors">Contato</a>
         </div>
-        {/* Mobile Menu Button - TODO: Implement toggle */}
-        <button className="md:hidden text-meg-dark">
-          <Menu size={28} />
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-meg-dark z-50" // Ensure button is above mobile menu
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+        >
+          {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
+
+        {/* Mobile Menu (Overlay) */}
+        {isMobileMenuOpen && (
+          <div className="absolute top-0 left-0 w-full h-screen bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center space-y-6 md:hidden z-40">
+            <a href="#inicio" className="text-2xl text-meg-dark hover:text-meg-pink transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Início</a>
+            <a href="#historia" className="text-2xl text-meg-dark hover:text-meg-pink transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Nossa História</a>
+            <a href="#servicos" className="text-2xl text-meg-dark hover:text-meg-pink transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Serviços</a>
+            <a href="#contato" className="text-2xl text-meg-dark hover:text-meg-pink transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contato</a>
+          </div>
+        )}
       </nav>
 
-      {/* Header Section - Logo removed from here, title kept */}
-      <header className="w-full max-w-5xl items-center justify-center text-sm flex flex-col mb-12 pt-16" id="inicio"> {/* Added id and padding top */}
-         {/* Logo moved to nav */}
+      {/* Header Section - Logo centered */}
+      <header className="w-full max-w-5xl items-center justify-center text-sm flex flex-col mb-12 pt-8" id="inicio"> {/* Adjusted padding top */}
+         {/* Logo centered - Using transparent logo */}
+         <Image
+            src="/images/LogoMEg.png" // Updated path to transparent logo
+            alt="MEG PET Store Logo"
+            width={180} // Increased size for better visibility
+            height={180}
+            className="mb-6" // Removed shadow-sm, ensured no rounded/border classes
+            priority // Prioritize loading the logo
+          />
         {/* Apply font-heading to the main title */}
         <h1 className="font-heading text-4xl md:text-5xl font-bold text-meg-pink-600 mb-2 text-center">MEG PET Store</h1>
-        <p className="text-lg md:text-xl text-meg-dark/80 text-center">Aqui seu PET é nossa família!</p>
+        <p className="text-lg md:text-xl text-meg-dark/80 text-center mb-6">Cuidando do seu pet com o mesmo amor que cuidamos da nossa Meg!</p>
+        {/* WhatsApp Button in Header */}
+        <WhatsAppButton text="Fale Conosco Agora" />
       </header>
 
       {/* Story Section */}
@@ -89,14 +129,29 @@ export default function Home() {
             <p className="text-center text-sm text-gray-600 mt-2">Nosso Taxidog para o serviço de Leva e Trás!</p>
           </div>
         </div>
-        {/* Video Section Placeholder */}
+        {/* WhatsApp Button in Services */}
+        <div className="text-center mt-10">
+          <WhatsAppButton text="Agende Banho e Tosa" />
+        </div>
+        {/* Video Section */}
         <div id="video-secadora" className="mt-10 scroll-mt-20">
            {/* Apply font-heading to subsection title */}
            <h3 className="font-heading text-2xl font-semibold text-meg-pink-600 mb-4 text-center">🌟 Nosso Diferencial no Banho e Tosa!</h3>
            <p className="text-center text-gray-700 mb-4">Para os pets que não gostam de secador ou se irritam com o barulho, usamos um sistema de secagem mais tranquilo e acolhedor, sempre priorizando o bem-estar do seu bichinho.</p>
-           <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
-             {/* Video will be embedded here */}
-             (Espaço reservado para o vídeo da secadora)
+           <div className="aspect-video bg-black rounded-lg overflow-hidden shadow-md">
+             {/* Embedded Video */}
+             <video
+               src="/videos/maquina-secadora.mp4"
+               width="100%"
+               height="100%"
+               autoPlay
+               loop
+               muted // Play without sound as requested
+               playsInline // Important for iOS playback
+               className="w-full h-full object-cover"
+             >
+               Seu navegador não suporta o elemento de vídeo.
+             </video>
            </div>
         </div>
       </section>
@@ -119,8 +174,8 @@ export default function Home() {
               Fixo: <a href="tel:+551125392146" className="hover:underline">(11) 2539-2146</a>
             </p>
             <p className="flex items-center">
-              {/* Using img tag for the SVG icon */}
-              <Image src="/images/whatsapp-icon.svg" alt="WhatsApp Icon" width={20} height={20} className="mr-3 flex-shrink-0" />
+              {/* Updated WhatsApp Icon */}
+              <Image src="/images/whatsapp-icon.png" alt="WhatsApp Icon" width={20} height={20} className="mr-3 flex-shrink-0" />
               WhatsApp: <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline">(11) 98710-2030</a>
             </p>
             <p className="flex items-center">
@@ -128,6 +183,10 @@ export default function Home() {
               <a href="https://www.instagram.com/meg_petstore" target="_blank" rel="noopener noreferrer" className="text-meg-pink-600 hover:underline">@meg_petstore</a>
             </p>
             <p className="mt-4">Venha nos visitar ou fale com a gente!</p>
+            {/* WhatsApp Button in Contact */}
+            <div className="mt-6">
+              <WhatsAppButton text="Chamar no WhatsApp" />
+            </div>
           </div>
 
           {/* Map */}
@@ -153,7 +212,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="w-full max-w-5xl text-center text-sm text-meg-dark/60 mt-12 border-t border-meg-dark/20 pt-6">
         <p>&copy; {new Date().getFullYear()} MEG PET Store. Todos os direitos reservados.</p>
-        <p className="mt-1">Desenvolvido com ❤️ por Fabiana Delgado @digidelga</p>
+        <p className="mt-1">Desenvolvido com ❤️ por Manus</p>
       </footer>
 
       {/* Floating WhatsApp Button */}
@@ -165,8 +224,8 @@ export default function Home() {
         aria-label="Fale conosco pelo WhatsApp"
         title="Fale conosco pelo WhatsApp"
       >
-        {/* Using img tag for the SVG icon */}
-        <Image src="/images/whatsapp-icon.svg" alt="WhatsApp Icon" width={28} height={28} />
+        {/* Updated WhatsApp Icon */}
+        <Image src="/images/whatsapp-icon.png" alt="WhatsApp Icon" width={28} height={28} />
       </a>
 
     </main>
