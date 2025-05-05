@@ -80,7 +80,7 @@ export default function Home() {
           />
         {/* Apply font-heading to the main title */}
         <h1 className="font-heading text-4xl md:text-5xl font-bold text-meg-pink-600 mb-2 text-center">MEG PET Store</h1>
-        <p className="text-lg md:text-xl text-meg-dark/80 text-center mb-6">Cuidando do seu pet com o mesmo amor que cuidamos da nossa Meg!</p>
+        <p className="text-lg md:text-xl text-meg-dark/80 text-center mb-6">Aqui seu PET é nossa família!</p>
         {/* WhatsApp Button in Header */}
         <WhatsAppButton text="Fale Conosco Agora" />
       </header>
@@ -212,7 +212,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="w-full max-w-5xl text-center text-sm text-meg-dark/60 mt-12 border-t border-meg-dark/20 pt-6">
         <p>&copy; {new Date().getFullYear()} MEG PET Store. Todos os direitos reservados.</p>
-        <p className="mt-1">Desenvolvido com ❤️ por Manus</p>
+        <p className="mt-1">Desenvolvido com ❤️ por Fabiana Delgado @digidelga</p>
       </footer>
 
       {/* Floating WhatsApp Button */}
